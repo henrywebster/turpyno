@@ -6,7 +6,6 @@ from turpyno.component import IdentifierFactory, Nooper, TypeId
 
 
 class TestComponent:
-
     def test_nooper(self) -> None:
         nooper = Nooper()
         assert TypeId.NOOPER == nooper.cid()
