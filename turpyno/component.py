@@ -44,10 +44,24 @@ class Identifier(Component):
         return self._name
 
 
+class ComponentContext:
+    def __init__(self, type_id: TypeId) -> None:
+        self._type_id = type_id
+
+
+class IdentifierContext(ComponentContext):
+    def __init__(self, name: str = "anon") -> None:
+        super().__init__(TypeId.IDENTIFIER)
+        self._name = name
+
+    def name(self) -> str:
+        return self._name
+
+
 class IdentifierFactory:
     def __init__(self) -> None:
         self._generator = unique_id()
 
-    def create(self, name: str = "anon") -> Identifier:
+    def create(self, context: IdentifierContext) -> Identifier:
         """Create a new named identifier."""
-        return Identifier(next(self._generator), name)
+        return Identifier(next(self._generator), context.name())
