@@ -6,7 +6,6 @@ from turpyno.generator import unique_id
 
 
 class TestGenerator:
-
     def test_unique_id(self) -> None:
         generator = unique_id()
         assert 0 == next(generator)

@@ -7,7 +7,7 @@ from turpyno.generator import unique_id
 
 
 class TypeId(Enum):
-    NOOPER = 1,
+    NOOPER = (1,)
     IDENTIFIER = 2
 
 
@@ -45,7 +45,6 @@ class Identifier(Component):
 
 
 class IdentifierFactory:
-
     def __init__(self) -> None:
         self._generator = unique_id()
 

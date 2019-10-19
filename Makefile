@@ -5,7 +5,7 @@ sync: requirements.txt venv/
 
 format: sync
 	. venv/bin/activate &&\
-	autopep8 -i turpyno/*.py tests/*.py
+	black turpyno/ tests/
 
 clean:
 	rm -rf venv
