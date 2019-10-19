@@ -12,20 +12,23 @@ class TestComponent:
         assert TypeId.NOOPER == nooper.cid()
 
     def test_identifier_anonymous(self) -> None:
-        identifier = IdentifierFactory.create()
+        factory = IdentifierFactory()
+        identifier = factory.create()
         assert "anon" == identifier.name()
         assert 0 == identifier.eid()
         assert TypeId.IDENTIFIER == identifier.cid()
 
     def test_identifier_named(self) -> None:
-        identifier = IdentifierFactory.create("Component A")
+        factory = IdentifierFactory()
+        identifier = factory.create("Component A")
         assert "Component A" == identifier.name()
         assert 0 == identifier.eid()
         assert TypeId.IDENTIFIER == identifier.cid()
 
     def test_identifier_unqiue_id(self) -> None:
-        identifier_a = IdentifierFactory.create("Component A")
-        identifier_b = IdentifierFactory.create("Component B")
+        factory = IdentifierFactory()
+        identifier_a = factory.create("Component A")
+        identifier_b = factory.create("Component B")
 
         assert "Component A" == identifier_a.name()
         assert 0 == identifier_a.eid()

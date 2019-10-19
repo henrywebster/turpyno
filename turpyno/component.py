@@ -45,9 +45,10 @@ class Identifier(Component):
 
 
 class IdentifierFactory:
-    _generator = unique_id()
 
-    @staticmethod
-    def create(name: str = "anon") -> Identifier:
+    def __init__(self) -> None:
+        self._generator = unique_id()
+
+    def create(self, name: str = "anon") -> Identifier:
         """Create a new named identifier."""
-        return Identifier(next(IdentifierFactory._generator), name)
+        return Identifier(next(self._generator), name)
