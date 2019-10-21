@@ -2,7 +2,15 @@
 Unit tests for components.
 """
 
-from turpyno.component import IdentifierContext, IdentifierFactory, TypeId
+from pytest import approx  # type: ignore
+import numpy as np  # type: ignore
+from turpyno.component import (
+    IdentifierContext,
+    IdentifierFactory,
+    RendererContext,
+    RendererFactory,
+    TypeId,
+)
 
 
 class TestComponent:
@@ -10,6 +18,7 @@ class TestComponent:
         factory = IdentifierFactory()
         context = IdentifierContext("Component A")
         identifier = factory.create(context)
+
         assert "Component A" == identifier.name()
         assert not identifier.alive()
         assert 0 == identifier.eid()
@@ -45,3 +54,23 @@ class TestComponent:
         assert not identifier_b.alive()
         assert 1 == identifier_b.eid()
         assert TypeId.IDENTIFIER == identifier_b.cid()
+
+    def test_renderer(self) -> None:
+        factory = RendererFactory()
+        context = RendererContext(50)
+        renderer = factory.create(context)
+
+        assert 50 == renderer.size()
+        assert approx(np.array([0, 0, 0], dtype=np.float32)) == renderer.translation()
+
+    def test_renderer_transalte(self) -> None:
+        factory = RendererFactory()
+        context = RendererContext(50)
+        renderer = factory.create(context)
+
+        assert 50 == renderer.size()
+        assert approx(np.array([0, 0, 0], dtype=np.float32)) == renderer.translation()
+
+        renderer.translate(np.array([50, 50, 0], dtype=np.float32))
+        assert 50 == renderer.size()
+        assert approx(np.array([50, 50, 0], dtype=np.float32)) == renderer.translation()
