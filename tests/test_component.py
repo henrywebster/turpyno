@@ -2,14 +2,10 @@
 Unit tests for components.
 """
 
-from turpyno.component import IdentifierContext, IdentifierFactory, Nooper, TypeId
+from turpyno.component import IdentifierContext, IdentifierFactory, TypeId
 
 
 class TestComponent:
-    def test_nooper(self) -> None:
-        nooper = Nooper()
-        assert TypeId.NOOPER == nooper.cid()
-
     def test_identifier_anonymous(self) -> None:
         factory = IdentifierFactory()
         context = IdentifierContext()

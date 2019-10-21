@@ -7,8 +7,7 @@ from turpyno.generator import unique_id
 
 
 class TypeId(Enum):
-    NOOPER = (1,)
-    IDENTIFIER = 2
+    IDENTIFIER = 1
 
 
 class Component:
@@ -20,13 +19,6 @@ class Component:
     def cid(self) -> TypeId:
         """Return the unique identifier for this component type."""
         return self.type
-
-
-class Nooper(Component):
-    """A component that does nothing"""
-
-    def __init__(self) -> None:
-        super().__init__(TypeId.NOOPER)
 
 
 class Identifier(Component):
