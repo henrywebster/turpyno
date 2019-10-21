@@ -20,6 +20,7 @@ test: tests/ turpyno/
 	. venv/bin/activate &&\
 	mypy --disallow-untyped-defs turpyno/*.py tests/*.py &&\
 	flake8 turpyno tests &&\
+	pylint turpyno &&\
 	python3 -m pytest -v
 
 package: sync test dist/

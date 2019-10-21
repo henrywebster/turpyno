@@ -3,14 +3,20 @@ Unit tests for the component class.
 """
 
 from enum import Enum
+from typing import NamedTuple
 from turpyno.generator import unique_id
 
 
 class TypeId(Enum):
+    """Types enum for components."""
+
     IDENTIFIER = 1
 
 
-class Component:
+IdentifierContext = NamedTuple("IdentifierContext", [("name", str)])
+
+
+class Component:  # pylint: disable=too-few-public-methods
     """Super class for all components."""
 
     def __init__(self, type_id: TypeId):
@@ -30,30 +36,20 @@ class Identifier(Component):
         self._name = name
 
     def eid(self) -> int:
+        """Return the entity id field."""
         return self._eid
 
     def name(self) -> str:
+        """Return the name field."""
         return self._name
 
 
-class ComponentContext:
-    def __init__(self, type_id: TypeId) -> None:
-        self._type_id = type_id
+class IdentifierFactory:  # pylint: disable=too-few-public-methods
+    """Factory method for identifier components."""
 
-
-class IdentifierContext(ComponentContext):
-    def __init__(self, name: str = "anon") -> None:
-        super().__init__(TypeId.IDENTIFIER)
-        self._name = name
-
-    def name(self) -> str:
-        return self._name
-
-
-class IdentifierFactory:
     def __init__(self) -> None:
         self._generator = unique_id()
 
     def create(self, context: IdentifierContext) -> Identifier:
         """Create a new named identifier."""
-        return Identifier(next(self._generator), context.name())
+        return Identifier(next(self._generator), context.name)
