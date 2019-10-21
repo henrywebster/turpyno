@@ -2,19 +2,20 @@
 Class for entities.
 """
 
-from typing import Collection
+from typing import Collection, NamedTuple
 from turpyno.component import Component, IdentifierContext, IdentifierFactory
 
-
-class Entity:
-    def __init__(self, components: Collection[Component]) -> None:
-        self.components = components
+Entity = NamedTuple("Entity", [("components", Collection[Component])])
 
 
-class EntityFactory:
+class EntityFactory:  # pylint: disable=too-few-public-methods
+    """Factory for creating entities."""
 
     identifier_factory = IdentifierFactory()
 
-    def build(self, context: IdentifierContext) -> Entity:
+    def build(  # pylint: disable=no-self-use
+        self, context: IdentifierContext  # pylint: disable=bad-continuation
+    ) -> Entity:
+        """Build an entity with just an identifier component."""
         identifier = EntityFactory.identifier_factory.create(context)
         return Entity([identifier])

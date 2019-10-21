@@ -6,14 +6,6 @@ from turpyno.component import IdentifierContext, IdentifierFactory, TypeId
 
 
 class TestComponent:
-    def test_identifier_anonymous(self) -> None:
-        factory = IdentifierFactory()
-        context = IdentifierContext()
-        identifier = factory.create(context)
-        assert "anon" == identifier.name()
-        assert 0 == identifier.eid()
-        assert TypeId.IDENTIFIER == identifier.cid()
-
     def test_identifier_named(self) -> None:
         factory = IdentifierFactory()
         context = IdentifierContext("Component A")
