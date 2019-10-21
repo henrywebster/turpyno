@@ -34,6 +34,7 @@ class Identifier(Component):
         super().__init__(TypeId.IDENTIFIER)
         self._eid = eid
         self._name = name
+        self._alive = False
 
     def eid(self) -> int:
         """Return the entity id field."""
@@ -42,6 +43,15 @@ class Identifier(Component):
     def name(self) -> str:
         """Return the name field."""
         return self._name
+
+    def alive(self) -> bool:
+        """Return if the entity is alive."""
+        return self._alive
+
+    def toggle(self) -> bool:
+        """Switch to opposite state and return the new value."""
+        self._alive = not self._alive
+        return self._alive
 
 
 class IdentifierFactory:  # pylint: disable=too-few-public-methods
