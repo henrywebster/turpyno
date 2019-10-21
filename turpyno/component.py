@@ -4,16 +4,20 @@ Unit tests for the component class.
 
 from enum import Enum
 from typing import NamedTuple
+import numpy as np  # type: ignore
+
 from turpyno.generator import unique_id
 
 
 class TypeId(Enum):
     """Types enum for components."""
 
-    IDENTIFIER = 1
+    IDENTIFIER = (1,)
+    RENDERER = 2
 
 
 IdentifierContext = NamedTuple("IdentifierContext", [("name", str)])
+RendererContext = NamedTuple("RendererContext", [("size", int)])
 
 
 class Component:  # pylint: disable=too-few-public-methods
@@ -63,3 +67,32 @@ class IdentifierFactory:  # pylint: disable=too-few-public-methods
     def create(self, context: IdentifierContext) -> Identifier:
         """Create a new named identifier."""
         return Identifier(next(self._generator), context.name)
+
+
+class Renderer(Component):
+    """Component that renders."""
+
+    def __init__(self, size: int) -> None:
+        super().__init__(TypeId.RENDERER)
+        self._size = size
+        self._translation = np.array([0, 0, 0], dtype=np.float32)
+
+    def size(self) -> int:
+        """Return the size."""
+        return self._size
+
+    def translation(self) -> np.array:
+        """Return the translation."""
+        return self._translation
+
+    def translate(self, translation: np.array) -> None:
+        """Translate the component."""
+        self._translation = translation
+
+
+class RendererFactory:  # pylint: disable=too-few-public-methods,no-self-use
+    """Factory method for renderer components."""
+
+    def create(self, context: RendererContext) -> Renderer:
+        """Create a new renderer."""
+        return Renderer(context.size)
