@@ -1,6 +1,6 @@
 sync: requirements.txt
 		. venv/bin/activate &&\
-		pip install -r requirements.txt\
+		pip install --quiet --requirement requirements.txt\
 
 env:
 	if ! [ -d venv ]; \
