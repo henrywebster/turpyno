@@ -57,7 +57,7 @@ class TestComponent:
 
     def test_renderer(self) -> None:
         factory = RendererFactory()
-        context = RendererContext(50)
+        context = RendererContext(None, 50)
         renderer = factory.create(context)
 
         assert 50 == renderer.size()
@@ -65,7 +65,7 @@ class TestComponent:
 
     def test_renderer_transalte(self) -> None:
         factory = RendererFactory()
-        context = RendererContext(50)
+        context = RendererContext(None, 50)
         renderer = factory.create(context)
 
         assert 50 == renderer.size()
