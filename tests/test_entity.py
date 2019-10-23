@@ -2,15 +2,24 @@
 Unit tests for entities.
 """
 
-from turpyno.component import IdentifierContext, IdentifierFactory
-from turpyno.entity import EntityFactory
+import pytest  # type: ignore
+
+from turpyno.component import IdentifierContext, IdentifierFactory, Identifier, Renderer
+from turpyno.entity import EntityFactory, EntityError
 
 
 class TestEntity:
     def test_create_entity(self) -> None:
         entity_factory = EntityFactory()
         identifier_factory = IdentifierFactory()
-        context = IdentifierContext("Entity a")
-        identifier = identifier_factory.create(context)
+        identifier = identifier_factory.create(IdentifierContext("Entity a"))
         entity = entity_factory.create([identifier])
-        assert entity is not None
+        assert identifier == entity.get(Identifier)
+
+    def test_entity_no_type(self) -> None:
+        entity_factory = EntityFactory()
+        identifier_factory = IdentifierFactory()
+        identifier = identifier_factory.create(IdentifierContext("Entity a"))
+        entity = entity_factory.create([identifier])
+        with pytest.raises(EntityError):
+            entity.get(Renderer)
