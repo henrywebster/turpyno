@@ -8,5 +8,9 @@ setup(
     url='https://github.com/henrywebster/turpyno',
     author='Henry Webster',
     author_email='hwebster@protonmail.ch',
-    keywords=['game']
+    keywords=['game'],
+    install_requires=[
+        'pygame',
+        'numpy'
+    ]
 )
