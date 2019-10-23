@@ -25,6 +25,13 @@ class Entity:  # pylint: disable=too-few-public-methods
                 return cast(T, component)
         raise EntityError("Entity does not have {} component.".format(component_type))
 
+    def has(self, component_type: Type[T]) -> bool:
+        """Get if the entity has a certain component."""
+        for component in self._components:
+            if isinstance(component, component_type):
+                return True
+        return False
+
 
 class EntityFactory:  # pylint: disable=too-few-public-methods
     """Factory for creating entities."""
