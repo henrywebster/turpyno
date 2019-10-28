@@ -18,7 +18,7 @@ class TestSystem:
         identifier_factory = IdentifierFactory()
         identifier = identifier_factory.create(IdentifierContext("entity a"))
         renderer_factory = RendererFactory()
-        renderer = renderer_factory.create(RendererContext(None, 50))
+        renderer = renderer_factory.create(RendererContext(None))
         entity_factory = EntityFactory()
         entity = entity_factory.create([identifier, renderer])
 

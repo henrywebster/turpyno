@@ -6,7 +6,7 @@ from enum import Enum
 from typing import NamedTuple
 
 import numpy as np  # type: ignore
-from pygame import Surface, draw  # type: ignore
+from pygame import Rect, Surface, draw  # type: ignore
 
 from turpyno.generator import unique_id
 
@@ -19,7 +19,7 @@ class TypeId(Enum):
 
 
 IdentifierContext = NamedTuple("IdentifierContext", [("name", str)])
-RendererContext = NamedTuple("RendererContext", [("surface", Surface), ("size", int)])
+RendererContext = NamedTuple("RendererContext", [("surface", Surface)])
 
 
 class Component:  # pylint: disable=too-few-public-methods
@@ -74,15 +74,29 @@ class IdentifierFactory:  # pylint: disable=too-few-public-methods
 class Renderer(Component):
     """Component that renders."""
 
-    def __init__(self, size: int, surface: Surface) -> None:
+    def __init__(self, surface: Surface) -> None:
         super().__init__(TypeId.RENDERER)
-        self._size = size
-        self._translation = np.array([0, 0, 0], dtype=np.float32)
+        self._coloring = np.array([255, 255, 255], dtype=np.uint8)
+        self._rectangle = Rect(0, 0, 1, 1)
+        self._scaling = 1.0
         self._surface = surface
+        self._translation = np.array([0, 0, 0], dtype=np.float32)
 
-    def size(self) -> int:
-        """Return the size."""
-        return self._size
+    def coloring(self) -> np.array:
+        """Return the color of the renderer."""
+        return self._coloring
+
+    def color(self, coloring: np.array) -> None:
+        """Set the color."""
+        self._coloring = coloring
+
+    def scaling(self) -> float:
+        """Return the scaling."""
+        return self._scaling
+
+    def scale(self, scaling: float) -> None:
+        """Set the scale."""
+        self._scaling = scaling
 
     def translation(self) -> np.array:
         """Return the translation."""
@@ -94,7 +108,11 @@ class Renderer(Component):
 
     def render(self) -> None:
         """Render to the screen."""
-        draw.rect(self._surface, (0, 0, 255), (200, 200, 200, 200))
+        self._rectangle.x = self._translation[0]
+        self._rectangle.y = self._translation[1]
+        self._rectangle.w = self._scaling
+        self._rectangle.h = self._scaling
+        draw.rect(self._surface, tuple(self._coloring), self._rectangle)
 
 
 class RendererFactory:  # pylint: disable=too-few-public-methods,no-self-use
@@ -102,4 +120,4 @@ class RendererFactory:  # pylint: disable=too-few-public-methods,no-self-use
 
     def create(self, context: RendererContext) -> Renderer:
         """Create a new renderer."""
-        return Renderer(context.size, context.surface)
+        return Renderer(context.surface)
