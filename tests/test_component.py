@@ -57,20 +57,51 @@ class TestComponent:
 
     def test_renderer(self) -> None:
         factory = RendererFactory()
-        context = RendererContext(None, 50)
+        context = RendererContext(None)
         renderer = factory.create(context)
 
-        assert 50 == renderer.size()
+        assert approx(np.array([255, 255, 255], dtype=np.uint8)) == renderer.coloring()
+        assert approx(1.0) == renderer.scaling()
         assert approx(np.array([0, 0, 0], dtype=np.float32)) == renderer.translation()
 
     def test_renderer_transalte(self) -> None:
         factory = RendererFactory()
-        context = RendererContext(None, 50)
+        context = RendererContext(None)
         renderer = factory.create(context)
 
-        assert 50 == renderer.size()
+        assert approx(np.array([255, 255, 255], dtype=np.uint8)) == renderer.coloring()
+        assert approx(1.0) == renderer.scaling()
         assert approx(np.array([0, 0, 0], dtype=np.float32)) == renderer.translation()
 
         renderer.translate(np.array([50, 50, 0], dtype=np.float32))
-        assert 50 == renderer.size()
+        assert approx(np.array([255, 255, 255], dtype=np.uint8)) == renderer.coloring()
+        assert approx(1.0 == renderer.scaling())
         assert approx(np.array([50, 50, 0], dtype=np.float32)) == renderer.translation()
+
+    def test_renderer_scale(self) -> None:
+        factory = RendererFactory()
+        context = RendererContext(None)
+        renderer = factory.create(context)
+
+        assert approx(np.array([255, 255, 255], dtype=np.uint8)) == renderer.coloring()
+        assert approx(1.0) == renderer.scaling()
+        assert approx(np.array([0, 0, 0], dtype=np.float32)) == renderer.translation()
+
+        renderer.scale(20.0)
+        assert approx(np.array([255, 255, 255], dtype=np.uint8)) == renderer.coloring()
+        assert approx(20.0) == renderer.scaling()
+        assert approx(np.array([0, 0, 0], dtype=np.float32)) == renderer.translation()
+
+    def test_renderer_color(self) -> None:
+        factory = RendererFactory()
+        context = RendererContext(None)
+        renderer = factory.create(context)
+
+        assert approx(np.array([255, 255, 255], dtype=np.uint8)) == renderer.coloring()
+        assert approx(1.0) == renderer.scaling()
+        assert approx(np.array([0, 0, 0], dtype=np.float32)) == renderer.translation()
+
+        renderer.color(np.array([0, 0, 255], dtype=np.uint8))
+        assert approx(np.array([0, 0, 255], dtype=np.uint8)) == renderer.coloring()
+        assert approx(1.0) == renderer.scaling()
+        assert approx(np.array([0, 0, 0], dtype=np.float32)) == renderer.translation()

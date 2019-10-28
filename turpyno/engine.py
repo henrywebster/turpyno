@@ -34,7 +34,7 @@ class Engine:
 
     def create_renderer(self, context: RendererContext) -> Renderer:
         """Create a renderer. Beware the hack."""
-        context = RendererContext(pygame.display.set_mode((500, 500)), context.size)
+        context = RendererContext(pygame.display.set_mode((500, 500)))
         return self._renderer_factory.create(context)
 
     def create_entity(self, components: List[Component]) -> Entity:
@@ -50,6 +50,6 @@ class Engine:
 
     def render(self) -> None:  # pylint: disable=no-self-use
         """Run render system."""
-#        pygame.display.update()
+        #        pygame.display.update()
         self._render_system.render()
         pygame.display.flip()
