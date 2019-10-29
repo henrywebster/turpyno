@@ -10,34 +10,42 @@ from turpyno.component import (
     Identifier,
     IdentifierContext,
     IdentifierFactory,
-    RendererFactory,
-    RendererContext,
-    Renderer,
 )
 from turpyno.entity import Entity, EntityFactory
+from turpyno.renderer import (
+    CircleRendererContext,
+    Renderer,
+    RectangleRendererContext,
+    RendererFactory,
+)
 from turpyno.system import RenderSystem
 
 
 class Engine:
     """Manages the global engine."""
 
-    def __init__(self) -> None:
+    def __init__(self, surface: pygame.Surface) -> None:
         self._entities: List[Entity] = []
         self._entity_factory = EntityFactory()
         self._identifier_factory = IdentifierFactory()
         self._renderer_factory = RendererFactory()
         self._render_system = RenderSystem()
+        self._rectangle = pygame.Rect(0, 0, 1, 1)
+        self._display = surface
 
     def create_identifier(self, context: IdentifierContext) -> Identifier:
         """Create an identifier component."""
         return self._identifier_factory.create(context)
 
-    def create_renderer(self, context: RendererContext) -> Renderer:
+    def create_rectangle_renderer(self) -> Renderer:
         """Create a renderer. Beware the hack."""
-        context = RendererContext(
-            pygame.display.set_mode((500, 500)), pygame.Rect(0, 0, 1, 1)
-        )
-        return self._renderer_factory.create(context)
+        context = RectangleRendererContext(self._display, self._rectangle)
+        return self._renderer_factory.create_rectangle(context)
+
+    def create_circle_renderer(self) -> Renderer:
+        """Create a circle renderer."""
+        context = CircleRendererContext(self._display)
+        return self._renderer_factory.create_circle(context)
 
     def create_entity(self, components: List[Component]) -> Entity:
         """Create an entity of components."""

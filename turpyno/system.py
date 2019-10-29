@@ -4,7 +4,8 @@ Class for the game systems.
 
 from typing import List
 
-from turpyno.component import Identifier, Renderer
+from turpyno.component import Identifier
+from turpyno.renderer import Renderer
 from turpyno.entity import Entity
 
 

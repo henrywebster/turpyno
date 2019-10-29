@@ -17,8 +17,6 @@ class App:  # pylint: disable=too-few-public-methods
     def run(self) -> None:  # pylint: disable=no-self-use
         """Runs the program."""
 
-        pygame.init()
-        pygame.display.set_mode((400, 300))
         clock = pygame.time.Clock()
         closed = False
 
