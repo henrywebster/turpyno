@@ -4,8 +4,9 @@ Unit tests for entities.
 
 import pytest  # type: ignore
 
-from turpyno.component import IdentifierContext, IdentifierFactory, Identifier, Renderer
+from turpyno.component import IdentifierContext, IdentifierFactory, Identifier
 from turpyno.entity import EntityFactory, EntityError
+from turpyno.renderer import Renderer
 
 
 class TestEntity:
