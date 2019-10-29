@@ -19,7 +19,9 @@ class TypeId(Enum):
 
 
 IdentifierContext = NamedTuple("IdentifierContext", [("name", str)])
-RendererContext = NamedTuple("RendererContext", [("surface", Surface)])
+RendererContext = NamedTuple(
+    "RendererContext", [("surface", Surface), ("rectangle", Rect)]
+)
 
 
 class Component:  # pylint: disable=too-few-public-methods
@@ -74,10 +76,10 @@ class IdentifierFactory:  # pylint: disable=too-few-public-methods
 class Renderer(Component):
     """Component that renders."""
 
-    def __init__(self, surface: Surface) -> None:
+    def __init__(self, surface: Surface, rectangle: Rect) -> None:
         super().__init__(TypeId.RENDERER)
         self._coloring = np.array([255, 255, 255], dtype=np.uint8)
-        self._rectangle = Rect(0, 0, 1, 1)
+        self._rectangle = rectangle
         self._scaling = 1.0
         self._surface = surface
         self._translation = np.array([0, 0, 0], dtype=np.float32)
@@ -120,4 +122,4 @@ class RendererFactory:  # pylint: disable=too-few-public-methods,no-self-use
 
     def create(self, context: RendererContext) -> Renderer:
         """Create a new renderer."""
-        return Renderer(context.surface)
+        return Renderer(context.surface, context.rectangle)

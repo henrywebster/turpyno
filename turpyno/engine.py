@@ -34,7 +34,9 @@ class Engine:
 
     def create_renderer(self, context: RendererContext) -> Renderer:
         """Create a renderer. Beware the hack."""
-        context = RendererContext(pygame.display.set_mode((500, 500)))
+        context = RendererContext(
+            pygame.display.set_mode((500, 500)), pygame.Rect(0, 0, 1, 1)
+        )
         return self._renderer_factory.create(context)
 
     def create_entity(self, components: List[Component]) -> Entity:
