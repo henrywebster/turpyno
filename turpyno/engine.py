@@ -2,6 +2,7 @@
 Class for the engine.
 """
 
+from enum import Enum, auto
 from typing import List
 import pygame  # type: ignore
 
@@ -21,17 +22,35 @@ from turpyno.renderer import (
 from turpyno.system import RenderSystem
 
 
-class Engine:
+class VideoMode(Enum):
+    """Enum for types of video displays."""
+
+    NOOP = (auto(),)
+    DISPLAY = auto()
+
+
+class Engine:  # pylint: disable=too-many-instance-attributes
     """Manages the global engine."""
 
-    def __init__(self, surface: pygame.Surface) -> None:
+    def __init__(self, width: int, height: int) -> None:
         self._entities: List[Entity] = []
         self._entity_factory = EntityFactory()
         self._identifier_factory = IdentifierFactory()
         self._renderer_factory = RendererFactory()
         self._render_system = RenderSystem()
         self._rectangle = pygame.Rect(0, 0, 1, 1)
-        self._display = surface
+        self._surface = pygame.Surface((width, height))
+        self._screen: pygame.Surface = None
+
+    def setup(self, video_mode: VideoMode) -> None:
+        """Initialize engine."""
+        pygame.init()
+        if video_mode == VideoMode.NOOP:
+            self._screen = self._surface
+        else:
+            self._screen = pygame.display.set_mode(
+                (self._surface.get_width(), self._surface.get_height())
+            )
 
     def create_identifier(self, context: IdentifierContext) -> Identifier:
         """Create an identifier component."""
@@ -39,12 +58,12 @@ class Engine:
 
     def create_rectangle_renderer(self) -> Renderer:
         """Create a renderer. Beware the hack."""
-        context = RectangleRendererContext(self._display, self._rectangle)
+        context = RectangleRendererContext(self._surface, self._rectangle)
         return self._renderer_factory.create_rectangle(context)
 
     def create_circle_renderer(self) -> Renderer:
         """Create a circle renderer."""
-        context = CircleRendererContext(self._display)
+        context = CircleRendererContext(self._surface)
         return self._renderer_factory.create_circle(context)
 
     def create_entity(self, components: List[Component]) -> Entity:
@@ -60,6 +79,6 @@ class Engine:
 
     def render(self) -> None:  # pylint: disable=no-self-use
         """Run render system."""
-        #        pygame.display.update()
         self._render_system.render()
+        self._screen.blit(self._surface, (0, 0))
         pygame.display.flip()

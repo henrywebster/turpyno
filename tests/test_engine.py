@@ -2,14 +2,15 @@
 Unit tests for the engine.
 """
 
-from pygame import Surface  # type: ignore
-from turpyno.engine import Engine
+from turpyno.engine import Engine, VideoMode
 from turpyno.component import IdentifierContext
 
 
 class TestEngine:
     def test_engine(self) -> None:
-        engine = Engine(Surface((500, 500)))
+
+        engine = Engine(500, 500)
+        engine.setup(VideoMode.NOOP)
 
         assert 0 == len(engine.entities())
 
