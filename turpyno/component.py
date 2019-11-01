@@ -2,6 +2,7 @@
 Unit tests for the component class.
 """
 
+import numpy as np  # type: ignore
 from turpyno.generator import unique_id
 
 
@@ -44,3 +45,28 @@ class IdentifierFactory:  # pylint: disable=too-few-public-methods
     def create(self, name: str) -> Identifier:
         """Create a new named identifier."""
         return Identifier(next(self._generator), name)
+
+
+class Locator(Component):
+    """Class for setting the local transformation of a component."""
+
+    def __init__(self, offset: np.array) -> None:
+        self._translation = offset
+
+    def translate(self, translation: np.array) -> None:
+        """Set the translation of the locator."""
+        self._translation = translation
+
+    def translation(self) -> np.array:
+        """Get the translation of the locator."""
+        return self._translation
+
+
+class LocatorFactory:  # pylint: disable=too-few-public-methods
+    """Factory for locator components."""
+
+    def create(  # pylint: disable=no-self-use
+        self, offset: np.array = np.array([0, 0, 0], dtype=np.float32)
+    ) -> Locator:
+        """Create a new mover."""
+        return Locator(offset)
