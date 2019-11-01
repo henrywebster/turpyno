@@ -1,70 +1,32 @@
 """
 Class for the engine.
 """
-
-from enum import Enum, auto
 from typing import List
 import pygame  # type: ignore
+from pygame import Surface, display  # type: ignore
 
-from turpyno.component import (
-    Component,
-    Identifier,
-    IdentifierContext,
-    IdentifierFactory,
-)
+from turpyno.component import Component
 from turpyno.entity import Entity, EntityFactory
-from turpyno.renderer import (
-    CircleRendererContext,
-    Renderer,
-    RectangleRendererContext,
-    RendererFactory,
-)
 from turpyno.system import RenderSystem
 
 
-class VideoMode(Enum):
-    """Enum for types of video displays."""
-
-    NOOP = (auto(),)
-    DISPLAY = auto()
+class EngineError(Exception):
+    """Error regarding engine."""
 
 
-class Engine:  # pylint: disable=too-many-instance-attributes
-    """Manages the global engine."""
+class Engine:
+    """Manages the engine."""
 
-    def __init__(self, width: int, height: int) -> None:
+    def __init__(self, buff: Surface, screen: Surface) -> None:
         self._entities: List[Entity] = []
         self._entity_factory = EntityFactory()
-        self._identifier_factory = IdentifierFactory()
-        self._renderer_factory = RendererFactory()
         self._render_system = RenderSystem()
-        self._rectangle = pygame.Rect(0, 0, 1, 1)
-        self._surface = pygame.Surface((width, height))
-        self._screen: pygame.Surface = None
+        self._display = screen
+        self._back_buffer = buff
 
-    def setup(self, video_mode: VideoMode) -> None:
-        """Initialize engine."""
-        pygame.init()
-        if video_mode == VideoMode.NOOP:
-            self._screen = self._surface
-        else:
-            self._screen = pygame.display.set_mode(
-                (self._surface.get_width(), self._surface.get_height())
-            )
-
-    def create_identifier(self, context: IdentifierContext) -> Identifier:
-        """Create an identifier component."""
-        return self._identifier_factory.create(context)
-
-    def create_rectangle_renderer(self) -> Renderer:
-        """Create a renderer. Beware the hack."""
-        context = RectangleRendererContext(self._surface, self._rectangle)
-        return self._renderer_factory.create_rectangle(context)
-
-    def create_circle_renderer(self) -> Renderer:
-        """Create a circle renderer."""
-        context = CircleRendererContext(self._surface)
-        return self._renderer_factory.create_circle(context)
+    def get_buffer(self) -> Surface:
+        """Temporary method to get surface."""
+        return self._back_buffer
 
     def create_entity(self, components: List[Component]) -> Entity:
         """Create an entity of components."""
@@ -77,8 +39,31 @@ class Engine:  # pylint: disable=too-many-instance-attributes
         """Return the list of entities in the engine."""
         return self._entities
 
-    def render(self) -> None:  # pylint: disable=no-self-use
+    def render(self) -> None:
         """Run render system."""
         self._render_system.render()
-        self._screen.blit(self._surface, (0, 0))
-        pygame.display.flip()
+        self._display.blit(self._back_buffer, (0, 0))
+        display.flip()
+
+
+class EngineFactory:
+    """Factory class for engines."""
+
+    def __init__(self, headless: bool) -> None:
+        """Creates a new engine factory."""
+        self._headless = headless
+
+    def initialize(self) -> None:
+        """This initializes the pygame globals."""
+        if not self._headless:
+            assert not display.get_init()
+            pygame.init()
+
+    def create(self, width: int, length: int) -> Engine:
+        """Creates an engine."""
+        if self._headless:
+            shared_surface = Surface((width, length))
+            return Engine(shared_surface, shared_surface)
+        if not display.get_init():
+            raise EngineError("Display not initialized!")
+        return Engine(Surface((width, length)), display.set_mode((width, length)))

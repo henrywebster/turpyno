@@ -2,20 +2,21 @@
 Unit tests for the engine.
 """
 
-from turpyno.engine import Engine, VideoMode
-from turpyno.component import IdentifierContext
+from turpyno.engine import EngineFactory
+from turpyno.component import IdentifierFactory
 
 
 class TestEngine:
     def test_engine(self) -> None:
 
-        engine = Engine(500, 500)
-        engine.setup(VideoMode.NOOP)
+        engine_factory = EngineFactory(True)
+        engine_factory.initialize()
+        engine = engine_factory.create(500, 500)
 
         assert 0 == len(engine.entities())
 
-        context = IdentifierContext("square")
-        identifier = engine.create_identifier(context)
+        identifier_factory = IdentifierFactory()
+        identifier = identifier_factory.create("square")
         entity = engine.create_entity([identifier])
 
         assert 1 == len(engine.entities())

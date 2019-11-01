@@ -3,7 +3,6 @@ Unit tests for the component class.
 """
 
 from enum import Enum
-from typing import NamedTuple
 from turpyno.generator import unique_id
 
 
@@ -12,9 +11,6 @@ class TypeId(Enum):
 
     IDENTIFIER = (1,)
     RENDERER = 2
-
-
-IdentifierContext = NamedTuple("IdentifierContext", [("name", str)])
 
 
 class Component:  # pylint: disable=too-few-public-methods
@@ -61,6 +57,6 @@ class IdentifierFactory:  # pylint: disable=too-few-public-methods
     def __init__(self) -> None:
         self._generator = unique_id()
 
-    def create(self, context: IdentifierContext) -> Identifier:
+    def create(self, name: str) -> Identifier:
         """Create a new named identifier."""
-        return Identifier(next(self._generator), context.name)
+        return Identifier(next(self._generator), name)

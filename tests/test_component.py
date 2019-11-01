@@ -3,14 +3,13 @@ Unit tests for components.
 """
 
 
-from turpyno.component import IdentifierContext, IdentifierFactory, TypeId
+from turpyno.component import IdentifierFactory, TypeId
 
 
 class TestComponent:
     def test_identifier_named(self) -> None:
         factory = IdentifierFactory()
-        context = IdentifierContext("Component A")
-        identifier = factory.create(context)
+        identifier = factory.create("Component A")
 
         assert "Component A" == identifier.name()
         assert not identifier.alive()
@@ -19,8 +18,7 @@ class TestComponent:
 
     def test_identifier_toggle(self) -> None:
         factory = IdentifierFactory()
-        context = IdentifierContext("Component A")
-        identifier = factory.create(context)
+        identifier = factory.create("Component A")
         assert "Component A" == identifier.name()
         assert not identifier.alive()
         assert 0 == identifier.eid()
@@ -33,10 +31,8 @@ class TestComponent:
 
     def test_identifier_unqiue_id(self) -> None:
         factory = IdentifierFactory()
-        context_a = IdentifierContext("Component A")
-        context_b = IdentifierContext("Component B")
-        identifier_a = factory.create(context_a)
-        identifier_b = factory.create(context_b)
+        identifier_a = factory.create("Component A")
+        identifier_b = factory.create("Component B")
 
         assert "Component A" == identifier_a.name()
         assert not identifier_a.alive()

@@ -2,16 +2,9 @@
 Classes for rendering.
 """
 
-from typing import NamedTuple
 from pygame import Surface, Rect, draw  # type: ignore
 import numpy as np  # type: ignore
 from turpyno.component import Component, TypeId
-
-RectangleRendererContext = NamedTuple(
-    "RectangleRendererContext", [("surface", Surface), ("rectangle", Rect)]
-)
-
-CircleRendererContext = NamedTuple("CircleRendererContext", [("surface", Surface)])
 
 
 class Renderer(Component):
@@ -84,13 +77,18 @@ class CircleRenderer(Renderer):
         )
 
 
-class RendererFactory:  # pylint: disable=too-few-public-methods,no-self-use
+class RendererFactory:  # pylint: disable=too-few-public-methods
     """Factory method for renderer components."""
 
-    def create_rectangle(self, context: RectangleRendererContext) -> Renderer:
-        """Create a new rectangle renderer."""
-        return RectangleRenderer(context.surface, context.rectangle)
+    def __init__(self, surface: Surface, rectangle: Rect = Rect(0, 0, 1, 1)) -> None:
+        """Initialize a renderer factory."""
+        self._surface = surface
+        self._rectangle = rectangle
 
-    def create_circle(self, context: CircleRendererContext) -> Renderer:
+    def create_rectangle(self) -> Renderer:
+        """Create a new rectangle renderer."""
+        return RectangleRenderer(self._surface, self._rectangle)
+
+    def create_circle(self) -> Renderer:
         """Create a new circle renderer."""
-        return CircleRenderer(context.surface)
+        return CircleRenderer(self._surface)
