@@ -4,14 +4,13 @@ Classes for rendering.
 
 from pygame import Surface, Rect, draw  # type: ignore
 import numpy as np  # type: ignore
-from turpyno.component import Component, TypeId
+from turpyno.component import Component
 
 
 class Renderer(Component):
     """Component that renders."""
 
     def __init__(self, surface: Surface) -> None:
-        super().__init__(TypeId.RENDERER)
         self._coloring = np.array([255, 255, 255], dtype=np.uint8)
         self._scaling = 1.0
         self._surface = surface
