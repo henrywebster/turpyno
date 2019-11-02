@@ -4,6 +4,7 @@ Unit tests for the engine.
 
 from turpyno.engine import EngineFactory
 from turpyno.component import IdentifierFactory
+from turpyno.keymap import Keymap
 
 
 class TestEngine:
@@ -11,7 +12,7 @@ class TestEngine:
 
         engine_factory = EngineFactory(True)
         engine_factory.initialize()
-        engine = engine_factory.create(500, 500)
+        engine = engine_factory.create(500, 500, Keymap())
 
         assert 0 == len(engine.entities())
 

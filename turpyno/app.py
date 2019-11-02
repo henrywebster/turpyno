@@ -27,8 +27,11 @@ class App:  # pylint: disable=too-few-public-methods
                     and event.key == K_ESCAPE  # pylint: disable=bad-continuation
                 ) or event.type == pygame.QUIT:
                     closed = True
+                if event.type == pygame.KEYDOWN:
+                    self._engine.act(event.key)
                 else:
                     print(event)
+
             self._engine.render()
             clock.tick()
 
