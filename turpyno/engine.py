@@ -47,6 +47,7 @@ class Engine:
 
     def render(self) -> None:
         """Run render system."""
+        self._back_buffer.fill((0, 0, 0))
         self._render_system.render()
         self._display.blit(self._back_buffer, (0, 0))
         display.flip()
