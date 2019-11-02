@@ -3,6 +3,7 @@ Unit tests for the component class.
 """
 
 import numpy as np  # type: ignore
+from pygame import Rect  # type: ignore
 from turpyno.generator import unique_id
 
 
@@ -70,3 +71,33 @@ class LocatorFactory:  # pylint: disable=too-few-public-methods
     ) -> Locator:
         """Create a new mover."""
         return Locator(offset)
+
+
+class Collider(Component):
+    """Class for collision."""
+
+    def __init__(self, hitbox: Rect) -> None:
+        self._hitbox = hitbox
+
+    def query(self, hitbox: Rect) -> bool:
+        """Test if this collider is colliding."""
+        return self._hitbox.colliderect(hitbox)
+
+    def hitbox(self) -> Rect:
+        """Return the hitbox of the component."""
+        return self._hitbox
+
+    def update(self, location: np.array, scale: float) -> None:
+        """Update a hitbox."""
+        self._hitbox.x = location[0]
+        self._hitbox.y = location[1]
+        self._hitbox.w = scale
+        self._hitbox.h = scale
+
+
+class ColliderFactory:  # pylint: disable=too-few-public-methods
+    """Factory for colliders."""
+
+    def create(self) -> Collider:  # pylint: disable=no-self-use
+        """Create a new collider."""
+        return Collider(Rect(0, 0, 0, 0))

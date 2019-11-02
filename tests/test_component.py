@@ -4,7 +4,8 @@ Unit tests for components.
 
 import numpy as np  # type: ignore
 from pytest import approx  # type: ignore
-from turpyno.component import IdentifierFactory, LocatorFactory
+from pygame import Rect  # type: ignore
+from turpyno.component import IdentifierFactory, LocatorFactory, ColliderFactory
 
 
 class TestComponent:
@@ -61,3 +62,29 @@ class TestComponent:
 
         locator.translate(np.array([-4, 5, 0], dtype=np.float32))
         assert approx(np.array([-4, 5, 0], dtype=np.float32)) == locator.translation()
+
+    def test_collider_default(self) -> None:
+        factory = ColliderFactory()
+        collider = factory.create()
+
+        hitbox_a = collider.hitbox()
+        assert 0 == hitbox_a.x
+        assert 0 == hitbox_a.y
+        assert 0 == hitbox_a.w
+        assert 0 == hitbox_a.h
+
+        hitbox_b = Rect(0, 0, 1, 1)
+        assert not collider.query(hitbox_b)
+
+    def test_collider_update(self) -> None:
+        factory = ColliderFactory()
+        collider = factory.create()
+        collider.update(np.array([1, 1, 0], dtype=np.float32), 1.0)
+        hitbox_a = collider.hitbox()
+        assert 1 == hitbox_a.x
+        assert 1 == hitbox_a.y
+        assert 1 == hitbox_a.w
+        assert 1 == hitbox_a.h
+
+        hitbox_b = Rect(1, 1, 1, 1)
+        assert collider.query(hitbox_b)
