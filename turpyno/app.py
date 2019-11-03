@@ -23,8 +23,7 @@ class App:  # pylint: disable=too-few-public-methods
         while not closed:
             for event in pygame.event.get():
                 if (
-                    event.type == pygame.KEYDOWN  # pylint: disable=bad-continuation
-                    and event.key == K_ESCAPE  # pylint: disable=bad-continuation
+                    event.type == pygame.KEYDOWN and event.key == K_ESCAPE
                 ) or event.type == pygame.QUIT:
                     closed = True
                 if event.type == pygame.KEYDOWN:

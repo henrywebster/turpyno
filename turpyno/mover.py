@@ -28,13 +28,11 @@ class Mover(Component):
         """Check if there is something in the way."""
         candidate = np.add(self._translation, np.multiply(self._target, self._velocity))
         for collider in self._obstructs:  # multithread!
-            print(collider)
-            print(candidate[0])
             if collider.query_point(candidate[0], candidate[1]):
                 return True
         return False
 
-    def move(self) -> np.array:  # pylint: disable=no-self-use
+    def move(self) -> np.array:
         """Set a new translation based on target and velocity."""
         self._translation = np.add(
             self._translation, np.multiply(self._target, self._velocity)
@@ -52,6 +50,5 @@ class MoverFactory:  # pylint: disable=too-few-public-methods
     ) -> Mover:
         """Create a new mover."""
         if obstructs is None:
-            print("nooooo")
             return Mover(offset, [])
         return Mover(offset, obstructs)

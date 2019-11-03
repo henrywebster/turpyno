@@ -5,7 +5,7 @@ Class for entities.
 from typing import cast, List, TypeVar, Type
 from turpyno.component import Component
 
-T = TypeVar("T", bound=Component)  # pylint: disable=invalid-name
+T = TypeVar("T", bound=Component)
 
 
 class EntityError(Exception):
@@ -37,7 +37,7 @@ class EntityFactory:  # pylint: disable=too-few-public-methods
     """Factory for creating entities."""
 
     def create(  # pylint: disable=no-self-use
-        self, components: List[Component]  # pylint: disable=bad-continuation
+        self, components: List[Component]
     ) -> Entity:
         """Build an entity with just an identifier component."""
         return Entity(components)
