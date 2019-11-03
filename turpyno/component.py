@@ -83,6 +83,10 @@ class Collider(Component):
         """Test if this collider is colliding."""
         return self._hitbox.colliderect(hitbox)
 
+    def query_point(self, x_val: int, y_val: int) -> bool:
+        """Test if a point is colliding."""
+        return self._hitbox.collidepoint(x_val, y_val)
+
     def hitbox(self) -> Rect:
         """Return the hitbox of the component."""
         return self._hitbox

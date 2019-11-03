@@ -5,6 +5,7 @@ Unit tests for mover component.
 from pytest import approx  # type: ignore
 import numpy as np  # type: ignore
 from turpyno.mover import MoverFactory
+from turpyno.component import ColliderFactory
 
 
 class TestMover:
@@ -37,3 +38,12 @@ class TestMover:
 
         mover.velocitize(2.0)
         assert approx(np.array([0, 2, 0], dtype=np.float32)) == mover.move()
+
+    def test_obstructs(self) -> None:
+        collider_factory = ColliderFactory()
+        collider = collider_factory.create()
+        mover_factory = MoverFactory()
+        obstructs = [collider]
+        mover = mover_factory.create(obstructs=obstructs)
+
+        assert mover
