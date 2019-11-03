@@ -38,6 +38,18 @@ class MenuItem:  # pylint: disable=too-few-public-methods
         self._surface.blit(self._font.render(self._text, True, color), (0, 0))
 
 
+class MenuItemFactory:  # pylint: disable=too-few-public-methods
+    """Class to make menu items."""
+
+    def __init__(self, surface: Surface, font: Font) -> None:
+        self._surface = surface
+        self._font = font
+
+    def create(self, text: str, action: Callable[[], None]) -> MenuItem:
+        """Create a new menu item on same surface with same font."""
+        return MenuItem(text, self._font, self._surface, action)
+
+
 class Menu:
     """Represents a collection of menu items."""
 

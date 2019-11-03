@@ -5,10 +5,8 @@ from typing import List
 import pygame  # type: ignore
 from pygame import Surface, display  # type: ignore
 
-from turpyno.component import Component
 from turpyno.entity import Entity, EntityFactory
-from turpyno.keymap import Keymap
-from turpyno.system import RenderSystem
+from turpyno.scene import Scene
 
 
 class EngineError(Exception):
@@ -18,38 +16,23 @@ class EngineError(Exception):
 class Engine:
     """Manages the engine."""
 
-    def __init__(self, buff: Surface, screen: Surface, keymap: Keymap) -> None:
+    def __init__(self, screen: Surface) -> None:
         self._entities: List[Entity] = []
         self._entity_factory = EntityFactory()
-        self._render_system = RenderSystem()
         self._display = screen
-        self._back_buffer = buff
-        self._keymap = keymap
+        self._scene = Scene()
 
-    def get_buffer(self) -> Surface:
-        """Temporary method to get surface."""
-        return self._back_buffer
-
-    def create_entity(self, components: List[Component]) -> Entity:
-        """Create an entity of components."""
-        entity = self._entity_factory.create(components)
-        self._entities.append(entity)
-        self._render_system.register(entity)
-        return entity
-
-    def entities(self) -> List[Entity]:
-        """Return the list of entities in the engine."""
-        return self._entities
+    def stage(self, scene: Scene) -> None:
+        """Stage a scene to the main window."""
+        self._scene = scene
 
     def act(self, key: int) -> None:
         """Perform some action based on key."""
-        self._keymap.action(key)
+        self._scene.action(key)
 
     def render(self) -> None:
         """Run render system."""
-        self._back_buffer.fill((0, 0, 0))
-        self._render_system.render()
-        self._display.blit(self._back_buffer, (0, 0))
+        self._display.blit(self._scene.render(), (0, 0))
         display.flip()
 
 
@@ -66,13 +49,10 @@ class EngineFactory:
             assert not display.get_init()
             pygame.init()
 
-    def create(self, width: int, length: int, keymap: Keymap) -> Engine:
+    def create(self, width: int, length: int) -> Engine:
         """Creates an engine."""
         if self._headless:
-            shared_surface = Surface((width, length))
-            return Engine(shared_surface, shared_surface, keymap)
+            return Engine(Surface((width, length)))
         if not display.get_init():
             raise EngineError("Display not initialized!")
-        return Engine(
-            Surface((width, length)), display.set_mode((width, length)), keymap
-        )
+        return Engine(display.set_mode((width, length)))
