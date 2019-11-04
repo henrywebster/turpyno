@@ -32,6 +32,7 @@ class RenderSystem:
 
     def render(self) -> Surface:
         """Render to the surface."""
+        self._surface.fill((0, 0, 0))
         for entity in self._entities:
             translation = entity.get(Locator).translation()
             renderer = entity.get(Renderer)

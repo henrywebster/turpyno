@@ -3,7 +3,6 @@ App class for running windows.
 """
 import pygame  # type: ignore
 
-from pygame.locals import K_ESCAPE  # type: ignore
 
 from turpyno.engine import Engine
 
@@ -22,9 +21,7 @@ class App:  # pylint: disable=too-few-public-methods
 
         while not closed:
             for event in pygame.event.get():
-                if (
-                    event.type == pygame.KEYDOWN and event.key == K_ESCAPE
-                ) or event.type == pygame.QUIT:
+                if event.type == pygame.QUIT:
                     closed = True
                 if event.type == pygame.KEYDOWN:
                     self._engine.act(event.key)
