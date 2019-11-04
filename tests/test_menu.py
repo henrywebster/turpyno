@@ -6,6 +6,7 @@ from typing import Generator, List
 from pytest import fixture  # type: ignore
 from pygame import Surface  # type: ignore
 from pygame.font import Font, get_default_font, init, quit  # type: ignore
+import numpy as np  # type: ignore
 from turpyno.menu import Menu, MenuItem
 from turpyno.renderer import RendererFactory
 from turpyno.component import LocatorFactory
@@ -44,7 +45,7 @@ class TestMenu:
         l: List[int] = []
         action = lambda: l.append(1)  # noqa: E731
         item = MenuItem(locator, renderer, action)
-        menu = Menu([item])
+        menu = Menu([item], np.array([0, 0, 0], dtype=np.float32), 100)
         assert [] == l
 
         menu.action()
@@ -64,7 +65,7 @@ class TestMenu:
         action_b = lambda: l.append(2)  # noqa: E731
         item_a = MenuItem(locator_a, renderer_a, action_a)
         item_b = MenuItem(locator_b, renderer_b, action_b)
-        menu = Menu([item_a, item_b])
+        menu = Menu([item_a, item_b], np.array([0, 0, 0], dtype=np.float32), 100)
         assert [] == l
 
         menu.action()
@@ -88,7 +89,7 @@ class TestMenu:
         action_b = lambda: l.append(2)  # noqa: E731
         item_a = MenuItem(locator_a, renderer_a, action_a)
         item_b = MenuItem(locator_b, renderer_b, action_b)
-        menu = Menu([item_a, item_b])
+        menu = Menu([item_a, item_b], np.array([0, 0, 0], dtype=np.float32), 100)
         assert [] == l
 
         menu.action()
@@ -116,7 +117,7 @@ class TestMenu:
         action_b = lambda: l.append(2)  # noqa: E731
         item_a = MenuItem(locator_a, renderer_a, action_a)
         item_b = MenuItem(locator_b, renderer_b, action_b)
-        menu = Menu([item_a, item_b])
+        menu = Menu([item_a, item_b], np.array([0, 0, 0], dtype=np.float32), 100)
         assert [] == l
 
         menu.action()
@@ -144,7 +145,7 @@ class TestMenu:
         action_b = lambda: l.append(2)  # noqa: E731
         item_a = MenuItem(locator_a, renderer_a, action_a)
         item_b = MenuItem(locator_b, renderer_b, action_b)
-        menu = Menu([item_a, item_b])
+        menu = Menu([item_a, item_b], np.array([0, 0, 0], dtype=np.float32), 100)
         assert [] == l
 
         menu.action()

@@ -43,17 +43,16 @@ class MenuItem:
 class Menu:
     """Represents a collection of menu items."""
 
-    def __init__(self, items: List[MenuItem]) -> None:
+    def __init__(self, items: List[MenuItem], offset: np.array, spacing: int) -> None:
         assert len(items) != 0
         self._items = items
         self._focus = 0
         self._count = len(items)
-        offset = 0
         self._items[0].focus()
+        delta = 0
         for item in items:
-            print(offset)
-            item.translate(np.array([0, offset, 0], dtype=np.float32))
-            offset += 100
+            item.translate(np.add(offset, np.array([0, delta, 0], dtype=np.float32)))
+            delta += spacing
 
     def action(self) -> None:
         """Act on the currently focused item."""
