@@ -3,51 +3,33 @@ Classes for menus.
 """
 
 from typing import List, Callable
-from pygame import Surface  # type: ignore
-from pygame.font import Font  # type: ignore
+import numpy as np  # type: ignore
+from turpyno.renderer import TextRenderer
 
 
-class MenuItem:  # pylint: disable=too-few-public-methods
+class MenuItem:
     """Represents a menu item."""
 
-    def __init__(
-        self, text: str, font: Font, surface: Surface, action: Callable[[], None]
-    ) -> None:
-        self._focus_color = (0, 255, 0)
-        self._color = (255, 255, 255)
-        self._font = font
-        self._text = text
-        self._surface = surface
+    def __init__(self, renderer: TextRenderer, action: Callable[[], None]) -> None:
+        self._focus_color = np.array([255, 255, 0], np.uint8)
+        self._color = np.array([255, 255, 255], np.uint8)
         self._focused = False
         self._action = action
+        self._renderer = renderer
 
     def focus(self) -> None:
         """Focus the menu item."""
         self._focused = True
+        self._renderer.color(self._focus_color)
+
+    def unfocus(self) -> None:
+        """Unfocus the menu item."""
+        self._focused = False
+        self._renderer.color(self._color)
 
     def action(self) -> None:
         """Perform an action."""
         self._action()
-
-    def render(self) -> None:
-        """Render the menu item."""
-        if self._focused:
-            color = self._focus_color
-        else:
-            color = self._color
-        self._surface.blit(self._font.render(self._text, True, color), (0, 0))
-
-
-class MenuItemFactory:  # pylint: disable=too-few-public-methods
-    """Class to make menu items."""
-
-    def __init__(self, surface: Surface, font: Font) -> None:
-        self._surface = surface
-        self._font = font
-
-    def create(self, text: str, action: Callable[[], None]) -> MenuItem:
-        """Create a new menu item on same surface with same font."""
-        return MenuItem(text, self._font, self._surface, action)
 
 
 class Menu:
@@ -65,6 +47,7 @@ class Menu:
 
     def next(self) -> None:
         """Move focus to the next menu item."""
+        self._items[self._focus].unfocus()
         if self._focus + 1 < self._count:
             self._focus += 1
         else:
@@ -73,6 +56,7 @@ class Menu:
 
     def previous(self) -> None:
         """Move focus to the previous menu item."""
+        self._items[self._focus].unfocus()
         if self._focus > 0:
             self._focus -= 1
         else:

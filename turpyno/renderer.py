@@ -3,6 +3,7 @@ Classes for rendering.
 """
 
 from pygame import Surface, Rect, draw  # type: ignore
+from pygame.font import Font  # type: ignore
 import numpy as np  # type: ignore
 from turpyno.component import Component
 
@@ -76,6 +77,19 @@ class CircleRenderer(Renderer):
         )
 
 
+class TextRenderer(Renderer):
+    """Component for rendering text."""
+
+    def __init__(self, surface: Surface, text: str, font: Font) -> None:
+        super().__init__(surface)
+        self._font = font
+        self._text = text
+
+    def render(self) -> None:
+        """Render text to the surface."""
+        self._surface.blit(self._font.render(self._text, True, self._coloring), (0, 0))
+
+
 class RendererFactory:  # pylint: disable=too-few-public-methods
     """Factory method for renderer components."""
 
@@ -91,3 +105,7 @@ class RendererFactory:  # pylint: disable=too-few-public-methods
     def create_circle(self) -> Renderer:
         """Create a new circle renderer."""
         return CircleRenderer(self._surface)
+
+    def create_text(self, text: str, font: Font) -> TextRenderer:
+        """Create a new text renderer."""
+        return TextRenderer(self._surface, text, font)
