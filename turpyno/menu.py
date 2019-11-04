@@ -5,17 +5,21 @@ Classes for menus.
 from typing import List, Callable
 import numpy as np  # type: ignore
 from turpyno.renderer import TextRenderer
+from turpyno.component import Locator
 
 
 class MenuItem:
     """Represents a menu item."""
 
-    def __init__(self, renderer: TextRenderer, action: Callable[[], None]) -> None:
+    def __init__(
+        self, locator: Locator, renderer: TextRenderer, action: Callable[[], None]
+    ) -> None:
         self._focus_color = np.array([255, 255, 0], np.uint8)
         self._color = np.array([255, 255, 255], np.uint8)
         self._focused = False
         self._action = action
         self._renderer = renderer
+        self._locator = locator
 
     def focus(self) -> None:
         """Focus the menu item."""
@@ -31,6 +35,10 @@ class MenuItem:
         """Perform an action."""
         self._action()
 
+    def translate(self, translation: np.array) -> None:
+        """Translate the menu item."""
+        self._locator.translate(translation)
+
 
 class Menu:
     """Represents a collection of menu items."""
@@ -40,6 +48,12 @@ class Menu:
         self._items = items
         self._focus = 0
         self._count = len(items)
+        offset = 0
+        self._items[0].focus()
+        for item in items:
+            print(offset)
+            item.translate(np.array([0, offset, 0], dtype=np.float32))
+            offset += 100
 
     def action(self) -> None:
         """Act on the currently focused item."""

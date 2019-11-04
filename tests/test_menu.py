@@ -8,6 +8,7 @@ from pygame import Surface  # type: ignore
 from pygame.font import Font, get_default_font, init, quit  # type: ignore
 from turpyno.menu import Menu, MenuItem
 from turpyno.renderer import RendererFactory
+from turpyno.component import LocatorFactory
 
 
 @fixture(scope="module", autouse=True)
@@ -23,9 +24,11 @@ class TestMenu:
         surface = Surface((1, 1))
         renderer_factory = RendererFactory(surface)
         renderer = renderer_factory.create_text("test", font)
+        locator_factory = LocatorFactory()
+        locator = locator_factory.create()
         l: List[int] = []
         action = lambda: l.append(1)  # noqa: E731
-        item = MenuItem(renderer, action)
+        item = MenuItem(locator, renderer, action)
         assert 0 == len(l)
 
         item.action()
@@ -36,9 +39,11 @@ class TestMenu:
         surface = Surface((1, 1))
         renderer_factory = RendererFactory(surface)
         renderer = renderer_factory.create_text("test", font)
+        locator_factory = LocatorFactory()
+        locator = locator_factory.create()
         l: List[int] = []
         action = lambda: l.append(1)  # noqa: E731
-        item = MenuItem(renderer, action)
+        item = MenuItem(locator, renderer, action)
         menu = Menu([item])
         assert [] == l
 
@@ -51,11 +56,14 @@ class TestMenu:
         renderer_factory = RendererFactory(surface)
         renderer_a = renderer_factory.create_text("a", font)
         renderer_b = renderer_factory.create_text("b", font)
+        locator_factory = LocatorFactory()
+        locator_a = locator_factory.create()
+        locator_b = locator_factory.create()
         l: List[int] = []
         action_a = lambda: l.append(1)  # noqa: E731
         action_b = lambda: l.append(2)  # noqa: E731
-        item_a = MenuItem(renderer_a, action_a)
-        item_b = MenuItem(renderer_b, action_b)
+        item_a = MenuItem(locator_a, renderer_a, action_a)
+        item_b = MenuItem(locator_b, renderer_b, action_b)
         menu = Menu([item_a, item_b])
         assert [] == l
 
@@ -72,11 +80,14 @@ class TestMenu:
         renderer_factory = RendererFactory(surface)
         renderer_a = renderer_factory.create_text("a", font)
         renderer_b = renderer_factory.create_text("b", font)
+        locator_factory = LocatorFactory()
+        locator_a = locator_factory.create()
+        locator_b = locator_factory.create()
         l: List[int] = []
         action_a = lambda: l.append(1)  # noqa: E731
         action_b = lambda: l.append(2)  # noqa: E731
-        item_a = MenuItem(renderer_a, action_a)
-        item_b = MenuItem(renderer_b, action_b)
+        item_a = MenuItem(locator_a, renderer_a, action_a)
+        item_b = MenuItem(locator_b, renderer_b, action_b)
         menu = Menu([item_a, item_b])
         assert [] == l
 
@@ -97,11 +108,14 @@ class TestMenu:
         renderer_factory = RendererFactory(surface)
         renderer_a = renderer_factory.create_text("a", font)
         renderer_b = renderer_factory.create_text("b", font)
+        locator_factory = LocatorFactory()
+        locator_a = locator_factory.create()
+        locator_b = locator_factory.create()
         l: List[int] = []
         action_a = lambda: l.append(1)  # noqa: E731
         action_b = lambda: l.append(2)  # noqa: E731
-        item_a = MenuItem(renderer_a, action_a)
-        item_b = MenuItem(renderer_b, action_b)
+        item_a = MenuItem(locator_a, renderer_a, action_a)
+        item_b = MenuItem(locator_b, renderer_b, action_b)
         menu = Menu([item_a, item_b])
         assert [] == l
 
@@ -122,11 +136,14 @@ class TestMenu:
         renderer_factory = RendererFactory(surface)
         renderer_a = renderer_factory.create_text("a", font)
         renderer_b = renderer_factory.create_text("b", font)
+        locator_factory = LocatorFactory()
+        locator_a = locator_factory.create()
+        locator_b = locator_factory.create()
         l: List[int] = []
         action_a = lambda: l.append(1)  # noqa: E731
         action_b = lambda: l.append(2)  # noqa: E731
-        item_a = MenuItem(renderer_a, action_a)
-        item_b = MenuItem(renderer_b, action_b)
+        item_a = MenuItem(locator_a, renderer_a, action_a)
+        item_b = MenuItem(locator_b, renderer_b, action_b)
         menu = Menu([item_a, item_b])
         assert [] == l
 

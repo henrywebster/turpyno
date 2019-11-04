@@ -87,7 +87,10 @@ class TextRenderer(Renderer):
 
     def render(self) -> None:
         """Render text to the surface."""
-        self._surface.blit(self._font.render(self._text, True, self._coloring), (0, 0))
+        placement = (self._translation[0], self._translation[1])
+        self._surface.blit(
+            self._font.render(self._text, True, self._coloring), placement
+        )
 
 
 class RendererFactory:  # pylint: disable=too-few-public-methods
