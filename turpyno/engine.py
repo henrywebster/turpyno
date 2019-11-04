@@ -21,6 +21,7 @@ class Engine:
         self._entity_factory = EntityFactory()
         self._display = screen
         self._scene = Scene()
+        self._stopped = False
 
     def stage(self, scene: Scene) -> None:
         """Stage a scene to the main window."""
@@ -29,6 +30,14 @@ class Engine:
     def act(self, key: int) -> None:
         """Perform some action based on key."""
         self._scene.action(key)
+
+    def stop(self) -> None:
+        """Perform clean up tasks."""
+        self._stopped = True
+
+    def stopped(self) -> bool:
+        """Query if stopped."""
+        return self._stopped
 
     def render(self) -> None:
         """Run render system."""

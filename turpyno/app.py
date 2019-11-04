@@ -17,12 +17,11 @@ class App:  # pylint: disable=too-few-public-methods
         """Runs the program."""
 
         clock = pygame.time.Clock()
-        closed = False
 
-        while not closed:
+        while not self._engine.stopped():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    closed = True
+                    self._engine.stop()
                 if event.type == pygame.KEYDOWN:
                     self._engine.act(event.key)
                 else:
