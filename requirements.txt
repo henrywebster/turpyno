@@ -7,6 +7,7 @@ bleach==3.1.0
 certifi==2019.9.11
 chardet==3.0.4
 Click==7.0
+coverage==4.5.4
 docutils==0.15.2
 entrypoints==0.3
 flake8==3.7.8
@@ -31,6 +32,7 @@ Pygments==2.4.2
 pylint==2.4.3
 pyparsing==2.4.2
 pytest==5.2.1
+pytest-cov==2.8.1
 readme-renderer==24.0
 requests==2.22.0
 requests-toolbelt==0.9.1
