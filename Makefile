@@ -21,7 +21,10 @@ test: tests/ turpyno/
 	mypy --disallow-untyped-defs turpyno/*.py tests/*.py &&\
 	flake8 turpyno tests &&\
 	pylint --extension-pkg-whitelist=pygame turpyno &&\
+	safety check &&\
+	bandit -r turpyno &&\
 	python3 -m pytest -v
+
 
 package: sync test dist/
 	. venv/bin/activate &&\

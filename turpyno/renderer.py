@@ -43,7 +43,7 @@ class Renderer(Component):
 
     def render(self) -> None:  # pylint: disable=no-self-use
         """Render to the screen. Should not be called."""
-        assert False
+        assert False  # nosec
 
 
 class RectangleRenderer(Renderer):

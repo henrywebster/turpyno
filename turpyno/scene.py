@@ -15,11 +15,11 @@ class Scene:
 
     def render(self) -> Surface:  # pylint: disable=no-self-use
         """Does nothing."""
-        assert False
+        assert False  # nosec
 
     def action(self, key: int) -> None:  # pylint: disable=unused-argument,no-self-use
         """Does nothing."""
-        assert False
+        assert False  # nosec
 
 
 class GameScene(Scene):
