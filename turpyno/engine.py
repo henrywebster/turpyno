@@ -2,8 +2,7 @@
 Class for the engine.
 """
 from typing import List
-import pygame  # type: ignore
-from pygame import Surface, display  # type: ignore
+from pygame import Surface, display, init  # type: ignore
 
 from turpyno.entity import Entity, EntityFactory
 from turpyno.scene import Scene
@@ -56,7 +55,7 @@ class EngineFactory:
         """This initializes the pygame globals."""
         if not self._headless:
             assert not display.get_init()
-            pygame.init()
+            init()
 
     def create(self, width: int, length: int) -> Engine:
         """Creates an engine."""
