@@ -30,5 +30,4 @@ class App:  # pylint: disable=too-few-public-methods
             self._engine.render()
             clock.tick()
 
-        pygame.quit()
         print("done")
