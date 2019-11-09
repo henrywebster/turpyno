@@ -44,7 +44,7 @@ class Menu:
     """Represents a collection of menu items."""
 
     def __init__(self, items: List[MenuItem], offset: np.array, spacing: int) -> None:
-        assert len(items) != 0
+        assert len(items) != 0  # nosec
         self._items = items
         self._focus = 0
         self._count = len(items)

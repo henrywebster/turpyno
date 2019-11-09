@@ -54,7 +54,7 @@ class EngineFactory:
     def initialize(self) -> None:
         """This initializes the pygame globals."""
         if not self._headless:
-            assert not display.get_init()
+            assert not display.get_init()  # nosec
             init()
 
     def create(self, width: int, length: int) -> Engine:
