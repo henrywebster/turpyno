@@ -2,7 +2,16 @@
 Class for the engine.
 """
 from typing import List
-from pygame import Surface, display, font, mixer  # type: ignore
+from pygame import (  # type: ignore
+    Surface,
+    display,
+    font,
+    mixer,
+    time,
+    QUIT,
+    KEYDOWN,
+    event,
+)
 
 from turpyno.entity import Entity, EntityFactory
 from turpyno.scene import Scene
@@ -37,6 +46,18 @@ class Engine:
     def stopped(self) -> bool:
         """Query if stopped."""
         return self._stopped
+
+    def run(self) -> None:
+        """Run the engine."""
+        clock = time.Clock()
+        while not self._stopped:
+            for e in event.get():
+                if e.type == QUIT:
+                    self._stopped = True
+                if e.type == KEYDOWN:
+                    self.act(e.key)
+            self.render()
+            clock.tick()
 
     def render(self) -> None:
         """Run render system."""
