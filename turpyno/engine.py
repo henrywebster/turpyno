@@ -61,6 +61,16 @@ class EngineFactory:
             font.init()
             mixer.init(22050, -16, 2, 512)
 
+    def free(self) -> None:
+        """Clean up global code."""
+        if not self._headless:
+            assert display.get_init()  # nosec
+            assert font.get_init()  # nosec
+            assert mixer.get_init()  # nosec
+            display.quit()
+            font.quit()
+            mixer.quit()
+
     def create(self, width: int, length: int) -> Engine:
         """Creates an engine."""
         if self._headless:
